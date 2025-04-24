@@ -40,3 +40,24 @@ let users = [
     url: "https://randomuser.me/api/portraits/men/29.jpg",
   },
 ];
+
+//회원가입
+export async function createUser(userid, password, name, email) {
+  const user = {
+    id: Date.now().toString(),
+    userid,
+    password,
+    name,
+    email,
+    url: "https://randomuser.me/api/portraits/men/29.jpg",
+  };
+  users = [user, ...users];
+  return users;
+}
+
+export async function login(userid, password) {
+  const user = users.find(
+    (user) => user.userid === userid && user.password === password
+  );
+  return user;
+}
