@@ -41,7 +41,7 @@ let users = [
   },
 ];
 
-//회원가입
+//사용자 생성
 export async function createUser(userid, password, name, email) {
   const user = {
     id: Date.now().toString(),
@@ -60,4 +60,33 @@ export async function login(userid, password) {
     (user) => user.userid === userid && user.password === password
   );
   return user;
+}
+
+//회원가입
+export async function createUser(userid, password, name, email) {
+  const finduser = users.find((user) => user.userid === userid);
+  if (!finduser) {
+    const user = {
+      id: Date.now().toString(),
+      userid,
+      password,
+      name,
+      email,
+    };
+    users = [user, ...users];
+    return users;
+  } else {
+    return { messsage: "이미 존재하는 계정입니다" };
+  }
+}
+
+//로그인
+export async function login(userid, password) {
+  const user = users.find((login) => login.userid === userid);
+  if (!user) return { message: "존재하지 않는 사용자입니다." };
+  if (user.password === password) {
+    return user;
+  } else {
+    return { message: "비밀번호가 틀렸습니다." };
+  }
 }
