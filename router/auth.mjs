@@ -3,6 +3,7 @@ import express from "express";
 const router = express.Router();
 
 //회원가입
+router.post("/register", authController.registerUser);
 
 // 로그인
 
