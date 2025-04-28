@@ -2,7 +2,7 @@ let users = [
   {
     id: "1",
     userid: "apple",
-    password: "1111",
+    password: "12345678",
     name: "김사과",
     email: "apple@apple.com",
     url: "https://randomuser.me/api/portraits/women/32.jpg",
@@ -60,4 +60,13 @@ export async function login(userid, password) {
     (user) => user.userid === userid && user.password === password
   );
   return user;
+}
+
+export async function findByuserid(userid) {
+  const user = users.find((user) => user.userid == userid);
+  return user;
+}
+
+export async function findByid(id) {
+  return users.find((user) => user.id === id);
 }
