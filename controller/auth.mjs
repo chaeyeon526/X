@@ -1,12 +1,11 @@
 import * as authRepository from "../data/auth.mjs";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
 import { config } from "../config.mjs";
 
 const secretKey = config.jwt.secretKey;
 const bcryptSaltRounds = config.bcrypt.saltRounds;
-const jwtExpiresInDays = config.jwt.expiresInsec;
+const jwtExpiresInDays = config.jwt.expiresInSec;
 
 async function createJwtToken(id) {
   return jwt.sign({ id }, secretKey, { expiresIn: jwtExpiresInDays });
@@ -16,13 +15,13 @@ export async function signup(req, res, next) {
   const { userid, password, name, email } = req.body;
 
   // 회원 중복 체크
-  const found = await authRepository.findByuserid(userid);
+  const found = await authRepository.findByUserid(userid);
   if (found) {
     return res.status(409).json({ message: `${userid}이 이미 있습니다.` });
   }
+
   const hashed = bcrypt.hashSync(password, bcryptSaltRounds);
   const users = await authRepository.createUser(userid, hashed, name, email);
-
   const token = await createJwtToken(users.id);
   console.log(token);
   if (users) {
@@ -32,30 +31,25 @@ export async function signup(req, res, next) {
 
 export async function login(req, res, next) {
   const { userid, password } = req.body;
-  const user = await authRepository.findByuserid(userid);
+  const user = await authRepository.findByUserid(userid);
   if (!user) {
     res.status(401).json(`${userid} 아이디를 찾을 수 없음`);
   }
   const isValidPassword = await bcrypt.compare(password, user.password);
-
-  //debug
-  // console.log(isValidPassword);
-  // console.log(password);
-  // console.log(user.user.password);
-
   if (!isValidPassword) {
     return res.status(401).json({ message: "아이디 또는 비밀번호 확인" });
-  } else {
-    const token = await createJwtToken(user.id);
-    res.status(200).json({ token, userid });
   }
+
+  const token = await createJwtToken(user.id);
+  res.status(200).json({ token, userid });
 }
+
 export async function verify(req, res, next) {
   const id = req.id;
   if (id) {
     res.status(200).json(id);
   } else {
-    res.status(401).json({ messasge: "사용자 인증 실패" });
+    res.status(401).json({ message: "사용자 인증 실패" });
   }
 }
 
