@@ -4,18 +4,30 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.mjs"
+    "dev": "nodemon app.mjs",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "nodemon": "^3.1.10"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chaeyeon526/X.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/chaeyeon526/X/issues"
+  },
+  "homepage": "https://github.com/chaeyeon526/X#readme",
+  "description": ""
 }
